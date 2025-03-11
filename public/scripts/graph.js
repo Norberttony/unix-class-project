@@ -9,12 +9,43 @@ class Graph {
         this.maxValue = 100;
 
         this.color = this.ctx.canvas.computedStyleMap().get("--secondary-color")[0];
+
+        this.thresholdLabel = this.createLabel(this.threshold);
+        
+        this.ctx.canvas.addEventListener("mousemove", (event) => {
+            if (!event.buttons)
+                return;
+
+            this.threshold = this.maxValue * (1 - event.offsetY / this.ctx.canvas.height);
+            this.setLabel(this.thresholdLabel, this.threshold);
+            this.draw();
+        });
+    }
+
+    createLabel(val){
+        const label = document.createElement("div");
+        label.classList.add("dashboard__graph-label");
+        this.setLabel(label, val);
+        this.ctx.canvas.parentNode.appendChild(label);
+        return label;
+    }
+
+    setLabel(label, val){
+        label.style.top = `${100 * (1 - val / this.maxValue)}%`;
+        label.innerText = Math.round(val);
+    }
+
+    // check the last few data points to see if they exceed the threshold
+    exceedsThreshold(){
+        return Math.max(...this.data.slice(this.data.length - 10)) > this.threshold;
     }
 
     draw(){
         // clear canvas
         const canvas = this.ctx.canvas;
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const exceedsThreshold = this.exceedsThreshold();
         
         // draw guidelines
         // this.ctx.strokeStyle = this.color;
@@ -29,8 +60,9 @@ class Graph {
 
         // draw data
         if (this.data.length > 0){
-            this.ctx.lineWidth = 3;
-            this.ctx.strokeStyle = this.color;
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = exceedsThreshold ? "red" : this.color;
+            this.ctx.fillStyle = exceedsThreshold ? "rgba(255, 0, 0, 0.1)" : "rgba(0, 239, 255, 0.1)";
 
             this.ctx.beginPath();
             this.ctx.moveTo(0, this.getY(this.data[0]));
@@ -39,6 +71,10 @@ class Graph {
             }
 
             this.ctx.stroke();
+
+            this.ctx.lineTo(canvas.width, canvas.height);
+            this.ctx.lineTo(0, canvas.height);
+            this.ctx.fill();
         }
 
         // draw threshold

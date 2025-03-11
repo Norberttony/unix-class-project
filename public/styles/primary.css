@@ -14,9 +14,9 @@ body {
 }
 
 .dashboard__container canvas {
-    border: 1px solid var(--secondary-color);
     border-radius: 6px;
     background-color: var(--tertiary-color);
+    cursor: row-resize;
 }
 
 .dashboard__graph-container {
