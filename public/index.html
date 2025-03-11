@@ -4,10 +4,24 @@
 
         <title>Dashboard</title>
 
+        <link href = "styles/primary.css" rel = "stylesheet" type = "text/css"/>
+
+        <script defer src = "scripts/graph.js"></script>
+        <script defer src = "scripts/init.js"></script>
+
     </head>
     <body>
 
         <p>Remote Dashboard</p>
+        <div class = "dashboard__container">
+            <div class = "dashboard__cpu">
+                <p>CPU Usage</p>
+                <div class = "dashboard__graph-container">
+                    <canvas id = "dashboard__cpu-graph" width = 500 height = 300></canvas>
+                    <div class = "dashboard__graph-label">50</div>
+                </div>
+            </div>
+        </div>
         
     </body>
 </html>

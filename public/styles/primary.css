@@ -1,0 +1,33 @@
+
+body {
+    --primary-color: rgb(1 0 12);
+    --secondary-color: rgb(0 239 255);
+    --tertiary-color: #002d2c;
+
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.dashboard__container {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.dashboard__container canvas {
+    border: 1px solid var(--secondary-color);
+    border-radius: 6px;
+    background-color: var(--tertiary-color);
+}
+
+.dashboard__graph-container {
+    position: relative;
+    width: min-content;
+}
+
+.dashboard__graph-label {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: max-content;
+    transform: translateY(-50%);
+}
