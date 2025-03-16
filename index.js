@@ -18,13 +18,9 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 
-fs.open(PIPE_PATH, fs.constants.O_RDONLY | fs.constants.O_NONBLOCK, (err, fd) => {
-    if (err)
-        throw new Error(err);
-    const pipe = new net.Socket({ fd });
-    pipe.on("data", (data) => {
-        io.emit("data", data.toString());
-    });
+fs.createReadStream(PIPE_PATH, { encoding: "utf8" }).on("data", (data) => {
+    console.log(data);
+    io.emit("data", data.toString());
 });
 
 app.use(express.static(pathModule.resolve("./public")));
