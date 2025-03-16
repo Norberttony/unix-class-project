@@ -1,11 +1,14 @@
 
-import fs from "fs";
-import pathModule from "path"
-import express from "express";
-import http from "http";
-import { Server } from "socket.io";
+const fs = require("fs");
+const pathModule = require("path");
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const { config } = require("dotenv");
 
-const PIPE_PATH = "/tmp/sysmon_pipe";
+config();
+
+const PIPE_PATH = process.env.PIPE;
 
 
 export const app = express();

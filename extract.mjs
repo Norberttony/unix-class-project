@@ -1,7 +1,7 @@
 
-import fs from "fs";
-import sysInfo from "systeminformation";
-import { config } from "dotenv";
+const fs = require("fs");
+const sysInfo = require("systeminformation");
+const { config } = require("dotenv");
 
 config({ path: ".env" });
 
