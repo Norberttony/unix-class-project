@@ -17,16 +17,17 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 
-(async () => {
-    while (true){
-        fs.createReadStream(PIPE_PATH, { encoding: "utf8" }).on("data", (data) => {
-            console.log(data);
-            io.emit("data", data);
-        });
-        await new Promise(res => setTimeout(res, 500));
-    }
-})();
+function readPipe(){
+    console.log("Reading data...");
+    fs.createReadStream(PIPE_PATH, { encoding: "utf8" }).on("data", (data) => {
+        console.log(data);
+        io.emit("data", data);
+        setTimeout(readPipe, 1000);
+    });
+}
 
 app.use(express.static(pathModule.resolve("./public")));
 
-server.listen(80);
+server.listen(8000);
+
+readPipe();

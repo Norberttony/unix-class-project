@@ -3,7 +3,7 @@ const fs = require("fs");
 const sysInfo = require("systeminformation");
 const { config } = require("dotenv");
 
-config({ path: ".env" });
+config();
 
 
 async function getStats(){
@@ -20,7 +20,7 @@ net transfer=${net[0].tx_bytes} receive=${net[0].rx_bytes}`;
 }
 
 
-const writeStream = fs.createWriteStream(process.env.PIPE, { flags: "w" });
+const writeStream = fs.createWriteStream(process.env.PIPE);
 
 // record stats every 2 seconds
 (async () => {
