@@ -21,7 +21,9 @@ net transfer=${net[0].tx_bytes} receive=${net[0].rx_bytes}`;
 
 
 // record stats every 2 seconds
-while (true){
-    fs.writeFileSync(process.env.PIPE + "\n", await getStats());
-    await new Promise((res) => setTimeout(res, 2000));
-}
+(async () => {
+    while (true){
+        fs.writeFileSync(process.env.PIPE + "\n", await getStats());
+        await new Promise((res) => setTimeout(res, 2000));
+    }
+})();
