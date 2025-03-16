@@ -11,10 +11,10 @@ config();
 const PIPE_PATH = process.env.PIPE;
 
 
-export const app = express();
+const app = express();
 const server = http.createServer(app);
 
-export const io = new Server(server);
+const io = new Server(server);
 
 
 fs.createReadStream(PIPE_PATH, { encoding: "utf8" }).on("data", (data) => {
