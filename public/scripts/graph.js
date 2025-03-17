@@ -6,7 +6,7 @@ class Graph {
 
         this.guidelines = 4;
         this.threshold = 50;
-        this.maxValue = 100;
+        this.maxValue;
 
         this.color = this.ctx.canvas.computedStyleMap().get("--secondary-color")[0];
 
@@ -16,10 +16,24 @@ class Graph {
             if (!event.buttons)
                 return;
 
-            this.threshold = this.maxValue * (1 - event.offsetY / this.ctx.canvas.height);
+            this.threshold = this.getMaxValue() * (1 - event.offsetY / this.ctx.canvas.height);
             this.setLabel(this.thresholdLabel, this.threshold);
             this.draw();
         });
+    }
+
+    get isSize(){
+        if (this.maxValue && this.maxValue <= 100)
+            return false;
+        else
+            return true;
+    }
+
+    getMaxValue(){
+        if (this.maxValue)
+            return this.maxValue;
+        else
+            return Math.max(...this.data) * 1.25;
     }
 
     createLabel(val){
@@ -31,8 +45,19 @@ class Graph {
     }
 
     setLabel(label, val){
-        label.style.top = `${100 * (1 - val / this.maxValue)}%`;
-        label.innerText = Math.round(val);
+        label.style.top = `${100 * (1 - val / this.getMaxValue())}%`;
+
+        let displayText = Math.round(val);
+        if (this.isSize){
+            const label = [ "bytes", "KiB", "MiB", "GiB" ];
+            let idx = 0;
+            while (displayText >= 1024){
+                displayText /= 1024;
+                idx++;
+            }
+            displayText = `${Math.round(displayText)} ${label[idx]}`;
+        }
+        label.innerText = displayText;
     }
 
     // check the last few data points to see if they exceed the threshold
@@ -41,6 +66,8 @@ class Graph {
     }
 
     draw(){
+        this.setLabel(this.thresholdLabel, this.threshold);
+
         // clear canvas
         const canvas = this.ctx.canvas;
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -94,6 +121,6 @@ class Graph {
     }
 
     getY(val){
-        return this.ctx.canvas.height * (1 - val / this.maxValue);
+        return this.ctx.canvas.height * (1 - val / this.getMaxValue());
     }
 }
