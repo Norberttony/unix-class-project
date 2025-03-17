@@ -35,7 +35,7 @@ socket.on("data", (data) => {
                         graph.maxValue = 100;
                 }
                 const graph = graphs[name][propName];
-                graph.data.push(val);
+                graph.data.push(parseFloat(val));
                 if (graph.data.length > 100)
                     graph.data.shift();
                 graph.draw();

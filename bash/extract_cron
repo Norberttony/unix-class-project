@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if ! pgrep -f "node /home/api/unix-class-project/extract.js" > /dev/null; then
+        echo "Starting up!";
+        nohup node /home/api/unix-class-project/extract.js &
+fi
